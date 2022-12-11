@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>D-ID Wallet</title>
+
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="keywords" content="bitcoin, wallet, multisig, multisignature, address, browser, segwit, javascript, js, broadcast, transaction, verify, decode" />
+    <meta name="description" content="A Bitcoin Wallet written in Javascript. Supports Multisig, SegWit, Custom Transactions, nLockTime and more!" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="css/style.css" media="screen">
+
+    <script src="https://rawgit.com/MohammadYounes/AlertifyJS/master/build/alertify.min.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/MohammadYounes/AlertifyJS/master/build/css/alertify.min.css"/>
+
+
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/crypto-sha256-hmac.js"></script>
+    <script type="text/javascript" src="js/ripemd160.js"></script>
+    <script type="text/javascript" src="js/aes.js"></script>
+
+    <script type="text/javascript" src="js/qrcode.js"></script>
+    <script type="text/javascript" src="js/jsbn.js"></script>
+    <script type="text/javascript" src="js/ellipticcurve.js"></script>
+
+    <script type="text/javascript" src="js/coin.js"></script>
+    <script type="text/javascript" src="js/coinbin.js"></script>
+</head>
+
+<body>
+<div id="wrap">
+    <!-- Fixed navbar -->
+    <div id="header" class="navbar navbar-default " role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#home" class="navbar-brand" id="homeBtn"><img src="images/logo1.jpg"
+                                                                       style="height:49px;margin-top:-15px"></a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#wallet" data-toggle="tab"><span class="glyphicon glyphicon-briefcase"></span> Create
+                        wallet</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="container">
+
+        <noscript class="alert alert-danger center-block"><span class="glyphicon glyphicon-exclamation-sign"></span>
+            This page uses javascript, please enable it to continue!
+        </noscript>
+
+        <div class="tab-content">
+            <div class="tab-pane tab-content active" id="home">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>D-ID wallet <small>Digital Identity bitcoin wallet</small></h2>
+                    </div>
+                </div>
+                <br>
+                <div class="jumbotron">
+                    <h1>Your first Digital Identity Wallet!</h1>
+                    <h5>D-ID is a bitcoin wallet that allows the user to prove his identity online and represents a
+                        direct replacement to an identification document such as an ID card or passport.</h5>
+                    <h3>Click "Create wallet" to start</h3>
+                </div>
+                <hr>
+            </div>
+
+            <div class="tab-pane tab-content" id="wallet">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>D-ID wallet <small> browser based Digital Identity bitcoin wallet</small></h2>
+                        <div id="openLogin">
+                            <form class="formWallet" role="form" action="javascript:;">
+
+                                <p>Use the form below to start the wallet opening process and get ready for digital
+                                    identification.</p>
+                                <br>
+                                <br>
+
+                                <label>Email address</label>
+                                <input id="openEmail" type="email" class="form-control" placeholder="Email address"
+                                       required autofocus>
+                                <br>
+                                <label>Password</label>
+                                <input id="openPass" type="password" class="form-control" placeholder="Password"
+                                       required>
+                                <br>
+                                <label>Password confirm</label>
+                                <input id="openPassConfirm" type="password" class="form-control"
+                                       placeholder="Password confirm" required>
+                                <br>
+
+                                <div id="openLoginStatus" class="alert alert-danger hidden"></div>
+                                <button id="openBlinkingSDK" class="btn btn-primary" type="submit">Submit</button>
+                            </form>
+                        </div>
+
+                        <div id="callBlinkingSDK" class="hidden">
+                            <form class="formWallet" role="form" action="javascript:;">
+                                <br>
+                                <br>
+                                <label>Phone number verification</label>
+                                <h6><i>Input phone number</i></h6>
+                                <input id="phoneNumber" type="text" class="form-control" placeholder="+381 64 123 33 22"
+                                       src="/images/icon.png">
+                                <button id="send" class="btn btn-primary" type="submit">Send</button>
+                                <h6><i>Input One-Time Password we just sent you!</i></h6>
+                                <input id="otpNumber" type="text" class="form-control" placeholder="3182">
+                                <br>
+                                <label>Email</label>
+                                <input id="email" type="email" class="form-control" placeholder="milica@gmail.com"
+                                       required autofocus>
+                                <br>
+                                <label>Home address</label>
+                                <input id="homeAddress" type="text" class="form-control" placeholder="Vojvode Petka 11"
+                                       required autofocus>
+                                <br>
+                                <label>Home address confirmation (Photo)</label>
+                                <input id="addressConfirmationPhoto" type="image" class="form-control"
+                                       placeholder="Import document image" src="/images/potvrdaadrese.jpg"
+                                       style="height: 50%; width: 50%" required autofocus>
+                                <br>
+                                <label>User Selfie</label>
+                                <input id="facePhoto" type="image" class="form-control"
+                                       placeholder="Import document image" src="/images/selfie.jpg"
+                                       style="height: 50%; width: 50%" required autofocus>
+                                <br>
+                                <label>User ID</label>
+                                <input id="IdDocument" type="image" class="form-control"
+                                       placeholder="Import document image" src="/images/licnakarta.jpg"
+                                       style="height: 50%; width: 50%" required autofocus>
+                                <br>
+                                <script style='width:10%;'>
+                                    function openCalendarAlert() {
+                                        alertify.alert(
+                                            "<b style='padding-top: 30px; margin-left: 17px;'>Hold still!</b>",
+                                            "<p>We are checking if your data is in accordance with Serbian regulations through KYC process. If everything is clear, you will be able to Proceed. Otherwise, please contact our Customer Support.</p>",
+                                        );
+                                    }
+                                </script>
+                                <button id="openCalendar" class="btn btn-primary" type="submit"
+                                        onclick="openCalendarAlert()">Submit
+                                </button>
+                            </form>
+                        </div>
+
+                        <div id="calendar" class="hidden">
+                            <form class="formWallet" role="form" action="javascript:;">
+                                <div id="calendarOpenSuccess" class="alert alert-success hidden"></div>
+                                <div class="alert alert-warning">
+                                    <b>Legal Notice</b>: In accordance with the National Bank of Serbia’s decision on
+                                    the “Conditions and methods of determining and verifying the identity of a person
+                                    using the electronic communication means” from March 2019, it is possible for
+                                    “Providers of services related to digital assets” to perform video identification of
+                                    users.
+                                </div>
+
+                                <p><b>Choose the slot for video identification video call with our Customer support
+                                    agent.</b></p>
+
+                                <input type="datetime-local" id="date" required autofocus>
+                                <br>
+                                <br>
+                                <script style='width:10%; height: 70%;'>
+                                    function openVideoIdentification() {
+                                        alertify.alert(
+                                            "<p style='padding-top: 10px'>You have successfully scheduled a video identification call. Link to the video call, together with other details, have been sent to your email.</p>",
+                                            "<p><b>Tips: </b>When it starts, video identification must be carried out without interruption.\n" +
+                                            "Keep your mobile phone close, at some point we will send you a One-Time Password and you will need to read it out loud to us to confirm your identity.\n" +
+                                            "Video call will be recorded (audio and video) and we will store the recordings in accordance with the “Law on Prevention of Money Laundering and Terrorism Financing”, as well as in accordance with the “Law on Protection of Personal Data” of Republic of Serbia.\n</p>",
+                                        );
+                                    }
+                                </script>
+
+                                <button id="callVideoIdentification" class="btn btn-primary" type="submit"
+                                        onclick="openVideoIdentification()">Submit
+                                </button>
+                            </form>
+                        </div>
+
+                        <div id="videoIdentification" class="hidden">
+                            <form class="formWallet" role="form" action="javascript:;">
+                                <br>
+                                <p>With Blinking.id technical solution and our implementation, our users are able to
+                                    finish identity verification e2e digitally through video identification.</p>
+                                <br>
+                                <img class="form-control" src="images/identification.jpg"
+                                     style="height: 90%; width: 90%">
+                                <br>
+                                <br>
+                            </form>
+                            <script style='width:10%; height: 70%;'>
+                                function openWalet() {
+                                    alertify.alert(
+                                        "<b style='padding-top: 10px;margin-left: 17px;'>Congratulations!</b>",
+                                        "<p>You have successfully completed the video identification process and now, being a fully verified user, you are able to prove identity using the D-ID wallet private keys.</p>"
+                                    );
+                                }
+                            </script>
+
+                            <button id="callConfirmation" class="btn btn-primary" type="submit" onclick="openWalet()">
+                                Submit
+                            </button>
+                        </div>
+
+                        <div id="confirmation" class="hidden">
+                            <form class="formWallet" role="form" action="javascript:;">
+                                <br>
+                                <p>For additional user security, please enable multi-factor identification by scanning
+                                    the QR code or entering the secret key in one of the authentication
+                                    applications.</p>
+                                <br>
+                                <img class="form-control" src="images/qr.png" style="height: 50%; width: 50%">
+                                <br>
+                                <label>Secret key</label>
+                                <input class="form-control" type="text" style="width: 50%"
+                                       value="2RLINLER3O45G846NTLDPO4I" readonly>
+
+                                <br>
+                            </form>
+                            <button id="openBtn" class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+
+                        <div id="openWallet" class="hidden">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p><span style="float:right;"><a href="javascript:;" id="walletLogout"><span
+                                            class="glyphicon glyphicon-log-out"></span> Logout</a></span>Welcome to your
+                                        wallet, enjoy your stay!</p>
+                                </div>
+                                <div class="col-md-12" align="center">
+                                    <div id="walletQrCode"></div>
+                                    <br>
+                                    <div>
+                                        <span id="walletLoader" class="hidden"><img src="images/loader.gif"></span>
+                                        <span id="walletAddress"></span>
+                                    </div>
+                                    <br>
+                                    <div style="text-align:center; width:350px;">
+                                        <ul class="nav nav-pills" role="tablist">
+                                            <li role="presentation" class="active"><a href="javascript:;"
+                                                                                      id="walletBalance">0.00 BTC</a>
+                                            </li>
+                                            <li role="presentation"><a href="javascript:;" id="walletShowKeys">Keys</a>
+                                            </li>
+                                            <li role="presentation"><a href="javascript:;"
+                                                                       id="walletShowSpend">Spend</a></li>
+                                            <li role="presentation"><a href="javascript:;" id="walletHistory"
+                                                                       target="_blank">History</a></li>
+                                        </ul>
+
+                                        <br>
+                                        <div id="walletKeys" class="walletOptions hidden">
+                                            <label>Public Key</label>
+                                            <input class="form-control pubkey" type="text" readonly>
+
+                                            <div class="walletSegWitRS hidden">
+                                                <label>Redeem Script <i>(SegWit)</i></label>
+                                                <input class="form-control" type="text" readonly>
+                                            </div>
+
+                                            <label>Private key</label>
+                                            <div class="input-group">
+                                                <input class="form-control privkey" type="password" readonly>
+
+                                                <span class="input-group-btn">
+															<button class="showKey btn btn-default"
+                                                                    type="button">Show</button>
+														</span>
+                                            </div>
+
+                                            <label>Private Key (AES256 encrypted key)</label>
+                                            <input class="form-control privkeyaes" type="text" readonly>
+                                        </div>
+
+                                        <div id="walletSpend" class="walletOptions hidden">
+                                            <div class="row">
+                                                <div class="form-inline output">
+                                                    <div class="col-xs-8">
+                                                        <label>Address</label>
+                                                    </div>
+
+                                                    <div class="col-xs-3">
+                                                        <label>Amount</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" id="walletSpendTo">
+                                                <div class="form-horizontal output">
+                                                    <div class="col-xs-8">
+                                                        <input type="text" class="form-control addressTo"
+                                                               data-original-title="" title="">
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <input type="text" class="form-control amount"
+                                                               data-original-title="" title="" placeholder="0.00">
+
+                                                    </div>
+
+                                                    <a href="javascript:;" class="addressAdd"><span
+                                                            class="glyphicon glyphicon-plus"></span></a>
+                                                    <br><br>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <label><abbr title="the amount to pay in network miner fee">Transaction
+                                                        Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestwallet"><span
+                                                            class="glyphicon glyphicon-question-sign"></span></a></label>
+                                                    <input type="text" class="form-control" value="0.00001000"
+                                                           id="txFee">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div id="walletSendStatus" class="alert alert-danger hidden"></div>
+
+                                            <button class="btn btn-primary" type="button" id="walletSendBtn">Send
+                                            </button>
+                                            <button class="btn btn-default" type="button">Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
